@@ -1,6 +1,10 @@
 {
   "name": "@id6tm/madr-tools",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/id6tm/madr-tools"
+  },
   "bin": {
     "madr": "dist/index.js"
   },
