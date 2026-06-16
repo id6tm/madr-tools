@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
 
     steps:
       - name: Run Release Please
@@ -29,4 +30,6 @@ jobs:
     needs: release
     if: ${{ needs.release.outputs.release_created == 'true' }}
     uses: ./.github/workflows/publish.yml
+    with:
+      release_tag: ${{ needs.release.outputs.tag_name }}
     secrets: inherit

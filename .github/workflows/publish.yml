@@ -5,10 +5,20 @@ on:
     types:
       - published
   workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Release tag to attach binary assets to
+        required: false
+        type: string
   workflow_call:
+    inputs:
+      release_tag:
+        description: Release tag to attach binary assets to
+        required: false
+        type: string
 
 permissions:
-  contents: read
+  contents: write
   id-token: write
 
 jobs:
@@ -65,11 +75,27 @@ jobs:
           MADR_NPM_ARCH: ${{ matrix.arch }}
           MADR_BINARY_PATH: ${{ matrix.binary }}
 
+      - name: Prepare GitHub Release binary asset
+        shell: bash
+        run: |
+          mkdir -p release-assets
+          extension=""
+          if [[ "${{ matrix.platform }}" == "win32" ]]; then
+            extension=".exe"
+          fi
+          cp "${{ matrix.binary }}" "release-assets/madr-${{ matrix.platform }}-${{ matrix.arch }}${extension}"
+
       - name: Upload npm platform package
         uses: actions/upload-artifact@v4
         with:
           name: npm-${{ matrix.platform }}-${{ matrix.arch }}
           path: npm-packages/${{ matrix.platform }}-${{ matrix.arch }}
+
+      - name: Upload GitHub Release binary asset
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-binary-${{ matrix.platform }}-${{ matrix.arch }}
+          path: release-assets/*
 
   publish:
     needs: build-platform-packages
@@ -90,6 +116,19 @@ jobs:
         with:
           pattern: npm-*
           path: npm-packages
+
+      - name: Download GitHub Release binary assets
+        uses: actions/download-artifact@v4
+        with:
+          pattern: release-binary-*
+          path: release-assets
+          merge-multiple: true
+
+      - name: Upload binary assets to GitHub Release
+        run: gh release upload "$RELEASE_TAG" release-assets/* --clobber
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag || github.event.release.tag_name || github.ref_name }}
 
       - name: Publish platform packages to npm
         run: |
