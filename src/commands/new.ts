@@ -20,7 +20,7 @@ export function registerNewCommand(program: Command) {
 async function newAdr(titleFromArgument = "") {
   const { cancel, intro, isCancel, outro, text } = await import("@clack/prompts");
 
-  intro("madr-toolkit new");
+  intro("madr new");
 
   const config = await readAdrConfig();
 

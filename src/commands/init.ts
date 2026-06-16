@@ -16,7 +16,7 @@ export function registerInitCommand(program: Command) {
 async function init() {
   const { cancel, intro, isCancel, outro, select, text } = await import("@clack/prompts");
 
-  intro("madr-toolkit init");
+  intro("madr init");
 
   const directory = await text({
     message: "Where should ADR files be stored?",
