@@ -1,6 +1,6 @@
 {
   "name": "@id6tm/madr-tools",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Manage markdown architecture decision records",
   "license": "MIT",
   "repository": {
@@ -23,11 +23,11 @@
     "package-platform": "node npm/package-platform.mjs"
   },
   "optionalDependencies": {
-    "@id6tm/madr-tools-darwin-arm64": "0.0.1",
-    "@id6tm/madr-tools-darwin-x64": "0.0.1",
-    "@id6tm/madr-tools-linux-arm64": "0.0.1",
-    "@id6tm/madr-tools-linux-x64": "0.0.1",
-    "@id6tm/madr-tools-win32-x64": "0.0.1"
+    "@id6tm/madr-tools-darwin-arm64": "0.1.0",
+    "@id6tm/madr-tools-darwin-x64": "0.1.0",
+    "@id6tm/madr-tools-linux-arm64": "0.1.0",
+    "@id6tm/madr-tools-linux-x64": "0.1.0",
+    "@id6tm/madr-tools-win32-x64": "0.1.0"
   },
   "engines": {
     "node": ">=18"
