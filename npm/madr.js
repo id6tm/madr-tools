@@ -5,7 +5,6 @@ const path = require("node:path");
 
 const packages = {
   "darwin arm64": ["@id6tm/madr-tools-darwin-arm64", "madr"],
-  "darwin x64": ["@id6tm/madr-tools-darwin-x64", "madr"],
   "linux arm64": ["@id6tm/madr-tools-linux-arm64", "madr"],
   "linux x64": ["@id6tm/madr-tools-linux-x64", "madr"],
   "win32 x64": ["@id6tm/madr-tools-win32-x64", "madr.exe"],

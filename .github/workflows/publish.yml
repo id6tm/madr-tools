@@ -29,11 +29,6 @@ jobs:
             target: aarch64-unknown-linux-gnu
             binary: target/aarch64-unknown-linux-gnu/release/madr
           - platform: darwin
-            arch: x64
-            runner: macos-13
-            target: x86_64-apple-darwin
-            binary: target/x86_64-apple-darwin/release/madr
-          - platform: darwin
             arch: arm64
             runner: macos-14
             target: aarch64-apple-darwin

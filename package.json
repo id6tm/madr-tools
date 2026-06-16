@@ -24,7 +24,6 @@
   },
   "optionalDependencies": {
     "@id6tm/madr-tools-darwin-arm64": "0.1.0",
-    "@id6tm/madr-tools-darwin-x64": "0.1.0",
     "@id6tm/madr-tools-linux-arm64": "0.1.0",
     "@id6tm/madr-tools-linux-x64": "0.1.0",
     "@id6tm/madr-tools-win32-x64": "0.1.0"
