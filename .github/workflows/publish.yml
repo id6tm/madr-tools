@@ -11,36 +11,99 @@ permissions:
   id-token: write
 
 jobs:
+  build-platform-packages:
+    name: Build ${{ matrix.platform }}-${{ matrix.arch }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux
+            arch: x64
+            runner: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            binary: target/x86_64-unknown-linux-gnu/release/madr
+          - platform: linux
+            arch: arm64
+            runner: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
+            binary: target/aarch64-unknown-linux-gnu/release/madr
+          - platform: darwin
+            arch: x64
+            runner: macos-13
+            target: x86_64-apple-darwin
+            binary: target/x86_64-apple-darwin/release/madr
+          - platform: darwin
+            arch: arm64
+            runner: macos-14
+            target: aarch64-apple-darwin
+            binary: target/aarch64-apple-darwin/release/madr
+          - platform: win32
+            arch: x64
+            runner: windows-latest
+            target: x86_64-pc-windows-msvc
+            binary: target/x86_64-pc-windows-msvc/release/madr.exe
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Setup Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: 1.96.0
+          target: ${{ matrix.target }}
+
+      - name: Build
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: Create npm platform package
+        run: npm run package-platform
+        env:
+          MADR_NPM_PLATFORM: ${{ matrix.platform }}
+          MADR_NPM_ARCH: ${{ matrix.arch }}
+          MADR_BINARY_PATH: ${{ matrix.binary }}
+
+      - name: Upload npm platform package
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-${{ matrix.platform }}-${{ matrix.arch }}
+          path: npm-packages/${{ matrix.platform }}-${{ matrix.arch }}
+
   publish:
+    needs: build-platform-packages
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 26
-          cache: pnpm
+          node-version: 22
           registry-url: https://registry.npmjs.org
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Download npm platform packages
+        uses: actions/download-artifact@v4
+        with:
+          pattern: npm-*
+          path: npm-packages
 
-      - name: Check formatting
-        run: pnpm run format:check
+      - name: Publish platform packages to npm
+        run: |
+          for package in npm-packages/*; do
+            npm publish "./$package" --access public --provenance
+          done
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Typecheck
-        run: pnpm run typecheck
-
-      - name: Build
-        run: pnpm run build
-
-      - name: Publish to npm
-        run: pnpm publish --access public --no-git-checks --provenance
+      - name: Publish wrapper package to npm
+        run: npm publish --access public --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

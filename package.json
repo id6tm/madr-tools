@@ -1,37 +1,35 @@
 {
   "name": "@id6tm/madr-tools",
   "version": "0.0.1",
+  "description": "Manage markdown architecture decision records",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/id6tm/madr-tools"
   },
   "bin": {
-    "madr": "dist/index.js"
+    "madr": "npm/madr.js"
   },
   "files": [
-    "dist",
+    "npm/madr.js",
     "README.md"
   ],
-  "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc && node scripts/copy-templates.ts",
-    "typecheck": "tsc --noEmit",
-    "format": "oxfmt",
-    "format:check": "oxfmt --check",
-    "prepack": "pnpm run build"
+    "build": "cargo build --release",
+    "check": "cargo check",
+    "format:check": "cargo fmt --check",
+    "lint": "cargo clippy -- -D warnings",
+    "test": "cargo test",
+    "package-platform": "node npm/package-platform.mjs"
   },
-  "dependencies": {
-    "@clack/prompts": "^1.5.1",
-    "commander": "^15.0.0",
-    "picocolors": "^1.1.1",
-    "zod": "^4.4.3"
+  "optionalDependencies": {
+    "@id6tm/madr-tools-darwin-arm64": "0.0.1",
+    "@id6tm/madr-tools-darwin-x64": "0.0.1",
+    "@id6tm/madr-tools-linux-arm64": "0.0.1",
+    "@id6tm/madr-tools-linux-x64": "0.0.1",
+    "@id6tm/madr-tools-win32-x64": "0.0.1"
   },
-  "devDependencies": {
-    "@types/node": "^25.9.3",
-    "oxfmt": "^0.54.0",
-    "typescript": "^6.0.3"
-  },
-  "packageManager": "pnpm@11.7.0+sha512.19cc852c120c7125760f2443ee6be0ca5b40f9f50598de1a09a1f177503e010e57c23c77646e01e761de59bf874fb22a3398c33ab9691fc13eb946b6f0f4d620"
+  "engines": {
+    "node": ">=18"
+  }
 }
