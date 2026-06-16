@@ -1,6 +1,6 @@
 {
   "name": "@id6tm/madr-tools",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Manage markdown architecture decision records",
   "license": "MIT",
   "repository": {
