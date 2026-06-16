@@ -11,7 +11,7 @@ async function main() {
   const program = new Command();
 
   program
-    .name("madr-toolkit")
+    .name("madr")
     .description("Manage markdown architecture decision records")
     .version("1.0.0");
 

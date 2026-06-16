@@ -4,8 +4,6 @@
 - **Date:** YYYY-MM-DD
 - **Deciders:** [Name 1, Name 2, Name 3]
 
----
-
 ## Context and Problem Statement
 
 [Describe the context and problem you are facing. What are the constraints, requirements, and current situation that force you to make a decision? Keep it brief but informative.]

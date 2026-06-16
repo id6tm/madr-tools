@@ -1,8 +1,10 @@
 import type { Command } from "commander";
-import { mkdir, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import { ADR_CONFIG_FILE, DEFAULT_ADR_CONFIG } from "../adr.ts";
+import { ADR_TEMPLATES, findAdrTemplate } from "../templates/index.ts";
+import { syncAdrIndex } from "./sync.ts";
 
 export function registerInitCommand(program: Command) {
   program
@@ -27,46 +29,38 @@ async function init() {
     process.exit(1);
   }
 
-  const indexFileName = await text({
-    message: "What should the generated index filename be?",
-    placeholder: DEFAULT_ADR_CONFIG.indexFileName,
-    defaultValue: DEFAULT_ADR_CONFIG.indexFileName,
-  });
-
-  if (isCancel(indexFileName)) {
-    cancel("ADR initialization cancelled.");
-    process.exit(1);
-  }
-
-  const template = await select({
+  const selectedTemplate = await select({
     message: "Which ADR template should be used?",
-    options: [
-      {
-        label: "simple",
-        value: "preset:simple",
-        hint: "Context and Problem Statement, Options COnsidered, DEcision Outcome, Consequences, Links",
-      },
-    ],
+    options: ADR_TEMPLATES.map((template) => ({
+      label: template.name,
+      value: template.name,
+      hint: template.description,
+    })),
   });
 
-  if (isCancel(template)) {
+  if (isCancel(selectedTemplate)) {
     cancel("ADR initialization cancelled.");
     process.exit(1);
   }
 
   const config = {
     directory: directory.trim() || DEFAULT_ADR_CONFIG.directory,
-    indexFileName: indexFileName.trim() || DEFAULT_ADR_CONFIG.indexFileName,
-    template,
   };
   const resolvedDir = path.resolve(process.cwd(), config.directory);
+  const template = findAdrTemplate(selectedTemplate);
+
+  if (!template) {
+    throw new Error(`Unknown ADR template: ${selectedTemplate}`);
+  }
 
   await mkdir(resolvedDir, { recursive: true });
+  await copyFile(template.path, path.join(resolvedDir, "TEMPLATE.md"));
   await writeFile(
     path.resolve(process.cwd(), ADR_CONFIG_FILE),
     `${JSON.stringify(config, null, 2)}\n`,
     "utf8",
   );
+  await syncAdrIndex();
 
   outro(`ADR config ready: ${ADR_CONFIG_FILE}`);
 }

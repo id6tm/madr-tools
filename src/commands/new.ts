@@ -2,43 +2,47 @@ import type { Command } from "commander";
 import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
-import { fileURLToPath } from "node:url";
 import { DEFAULT_ADR_CONFIG, readAdrConfig } from "../adr.ts";
 import { syncAdrIndex } from "./sync.ts";
 
-const TEMPLATE_PATH = path.join(path.dirname(fileURLToPath(import.meta.url)), "../template.md");
+const ADR_TEMPLATE_FILE_NAME = "TEMPLATE.md";
 
 export function registerNewCommand(program: Command) {
   program
     .command("new")
+    .argument("[title]", "ADR title")
     .description(
       `Create a new ADR markdown file in the ADR directory (${DEFAULT_ADR_CONFIG.directory})`,
     )
     .action(newAdr);
 }
 
-async function newAdr() {
+async function newAdr(titleFromArgument = "") {
   const { cancel, intro, isCancel, outro, text } = await import("@clack/prompts");
 
   intro("madr-toolkit new");
 
-  const title = await text({
-    message: "What is the ADR title?",
-    validate(value = "") {
-      if (!value.trim()) {
-        return "Enter an ADR title.";
-      }
-    },
-  });
+  const config = await readAdrConfig();
+
+  const title =
+    titleFromArgument.trim() ||
+    (await text({
+      message: "What is the ADR title?",
+      validate(value = "") {
+        if (!value.trim()) {
+          return "Enter an ADR title.";
+        }
+      },
+    }));
 
   if (isCancel(title)) {
     cancel("ADR creation cancelled.");
     process.exit(1);
   }
 
-  const config = await readAdrConfig();
   const resolvedDir = path.resolve(process.cwd(), config.directory);
   await mkdir(resolvedDir, { recursive: true });
+  const templatePath = path.join(resolvedDir, ADR_TEMPLATE_FILE_NAME);
 
   const entries = await readdir(resolvedDir, { withFileTypes: true });
   const fileNumbers = entries
@@ -52,7 +56,7 @@ async function newAdr() {
   const fileName = `${adrNumber}-${slugify(title)}.md`;
   const relativePath = path.join(config.directory, fileName);
 
-  const contents = await renderAdrTemplate({
+  const contents = await renderAdrTemplate(templatePath, {
     date: currentDate(),
     id: `ADR-${adrNumber}`,
     number: adrNumber,
@@ -68,13 +72,16 @@ async function newAdr() {
   outro(`Created ${relativePath}`);
 }
 
-async function renderAdrTemplate(values: {
-  date: string;
-  id: string;
-  number: string;
-  title: string;
-}) {
-  const template = await readFile(TEMPLATE_PATH, "utf8");
+async function renderAdrTemplate(
+  templatePath: string,
+  values: {
+    date: string;
+    id: string;
+    number: string;
+    title: string;
+  },
+) {
+  const template = await readFile(templatePath, "utf8");
   return Object.entries({
     "{{counter}}": values.number,
     "{{date}}": values.date,
