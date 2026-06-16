@@ -6,7 +6,7 @@ use std::{
 
 use anyhow::{Context, Result};
 use chrono::Local;
-use dialoguer::{theme::ColorfulTheme, Input};
+use dialoguer::{Input, theme::ColorfulTheme};
 
 use crate::{adr, commands::sync};
 

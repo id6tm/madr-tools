@@ -1,7 +1,7 @@
 use std::fs;
 
 use anyhow::{Context, Result};
-use dialoguer::{theme::ColorfulTheme, Input, Select};
+use dialoguer::{Input, Select, theme::ColorfulTheme};
 
 use crate::{
     adr::{self, AdrConfig, DEFAULT_ADR_DIRECTORY},
