@@ -12,7 +12,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc && node scripts/copy-templates.mjs",
+    "build": "tsc && node scripts/copy-templates.ts",
     "typecheck": "tsc --noEmit",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
