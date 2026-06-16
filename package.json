@@ -1,0 +1,35 @@
+{
+  "name": "@id6tm/madr-tools",
+  "version": "0.0.1",
+  "description": "Manage markdown architecture decision records",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/id6tm/madr-tools"
+  },
+  "bin": {
+    "madr": "npm/madr.js"
+  },
+  "files": [
+    "npm/madr.js",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "cargo build --release",
+    "check": "cargo check",
+    "format:check": "cargo fmt --check",
+    "lint": "cargo clippy -- -D warnings",
+    "test": "cargo test",
+    "package-platform": "node npm/package-platform.mjs"
+  },
+  "optionalDependencies": {
+    "@id6tm/madr-tools-darwin-arm64": "0.0.1",
+    "@id6tm/madr-tools-darwin-x64": "0.0.1",
+    "@id6tm/madr-tools-linux-arm64": "0.0.1",
+    "@id6tm/madr-tools-linux-x64": "0.0.1",
+    "@id6tm/madr-tools-win32-x64": "0.0.1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
