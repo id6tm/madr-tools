@@ -1,7 +1,7 @@
 # {{title}}
 
 - **Status:** [Proposed | Accepted | Superseded]
-- **Date:** YYYY-MM-DD
+- **Date:** {{date}}
 - **Deciders:** [Name 1, Name 2, Name 3]
 
 ## Context and Problem Statement
