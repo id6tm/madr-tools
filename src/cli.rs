@@ -18,6 +18,8 @@ struct Cli {
 enum Command {
     /// Create .madrrc.json and the ADR markdown directory
     Init,
+    /// Export the bundled ADR template to the configured ADR directory
+    ExportTemplate,
     /// Create a new ADR markdown file in the ADR directory
     New {
         /// ADR numbers superseded by the new ADR. Accepts comma-separated values and can be repeated.
@@ -35,6 +37,7 @@ pub fn run() -> Result<()> {
 
     match cli.command {
         Some(Command::Init) => commands::init::run(),
+        Some(Command::ExportTemplate) => commands::export_template::run(),
         Some(Command::New { supersede, title }) => commands::new::run(title.join(" "), supersede),
         Some(Command::Sync) => commands::sync::run(),
         None => {
