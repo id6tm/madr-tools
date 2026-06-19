@@ -25,6 +25,11 @@ jobs:
         with:
           auto-install: true
 
+      - name: Cache Rust build outputs
+        uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: ci
+
       - name: Check formatting
         run: cargo fmt --check
 
@@ -80,6 +85,12 @@ jobs:
         uses: moonrepo/setup-toolchain@v0
         with:
           auto-install: true
+
+      - name: Cache Rust build outputs
+        uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: platform-packages
+          key: ${{ matrix.target }}
 
       - name: Build
         run: cargo build --release --target ${{ matrix.target }}
