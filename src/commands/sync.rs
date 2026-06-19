@@ -49,7 +49,7 @@ pub fn run() -> Result<()> {
     };
 
     let index = [
-        "# Architecture Decision Records (ADR)",
+        "# Architectural Decision Records (ADR)",
         "",
         "This directory tracks the key architectural decisions shaping our system. Each record documents the underlying rationale, trade-offs, and final decisions to provide a transparent history of our technical choices.",
         "",
