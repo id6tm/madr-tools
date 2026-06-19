@@ -1,8 +1,11 @@
-# {{title}}
+# {{ title }}
 
 - **Status:** [Proposed | Accepted | Superseded]
-- **Date:** {{date}}
+- **Date:** {{ date }}
 - **Deciders:** [Name 1, Name 2, Name 3]
+{% if supersedes %}
+- **Supersedes:** {% for adr in supersedes %}[{{ adr.id }}]({{ adr.link }}){% if not loop.last %}, {% endif %}{% endfor %}
+{% endif %}
 
 ## Context and Problem Statement
 

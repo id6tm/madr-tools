@@ -5,7 +5,8 @@ use anyhow::{Context, Result};
 use crate::adr;
 
 const ADR_INDEX_FILE_NAME: &str = "README.md";
-const ADR_TEMPLATE_FILE_NAME: &str = "TEMPLATE.md";
+const ADR_TEMPLATE_FILE_NAME: &str = "TEMPLATE.md.tera";
+const LEGACY_ADR_TEMPLATE_FILE_NAME: &str = "TEMPLATE.md";
 
 pub fn run() -> Result<()> {
     let config = adr::read_config()?;
@@ -58,6 +59,7 @@ pub fn run() -> Result<()> {
         "We manage our ADRs using [@id6tm/madr-tools](https://github.com/id6tm/madr-tools). Do not edit this index file directly.",
         "",
         "- **Create a new ADR:** Run `madr new \"Title of your decision\"`",
+        "- **Create a new ADR that supersedes earlier ADRs:** Run `madr new --supersede 1,2 \"Title of your decision\"`",
         "- **Regenerate this index:** Run `madr sync`",
         "",
         "## Documented Decisions",
@@ -83,6 +85,7 @@ fn is_adr_markdown_file(file_name: &str) -> bool {
     lower.ends_with(".md")
         && lower != ADR_INDEX_FILE_NAME.to_lowercase()
         && lower != ADR_TEMPLATE_FILE_NAME.to_lowercase()
+        && lower != LEGACY_ADR_TEMPLATE_FILE_NAME.to_lowercase()
 }
 
 fn adr_id(file_name: &str) -> String {
@@ -124,6 +127,7 @@ mod tests {
     fn excludes_index_and_template_from_adr_markdown_files() {
         assert!(!is_adr_markdown_file("README.md"));
         assert!(!is_adr_markdown_file("template.md"));
+        assert!(!is_adr_markdown_file("template.md.tera"));
         assert!(is_adr_markdown_file("0001-first.md"));
     }
 

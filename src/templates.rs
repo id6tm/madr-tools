@@ -10,7 +10,7 @@ pub struct AdrTemplate {
 pub const ADR_TEMPLATES: &[AdrTemplate] = &[AdrTemplate {
     name: "standard",
     description: "Context, Options Considered, Decision Outcome, Consequences, and Links",
-    contents: include_str!("templates/standard.md"),
+    contents: include_str!("templates/standard.md.tera"),
 }];
 
 pub fn find(name: &str) -> Result<AdrTemplate> {

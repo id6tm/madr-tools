@@ -21,7 +21,7 @@ madr init
 This creates:
 
 - `.madrrc.json` with the ADR directory path
-- `docs/adr/TEMPLATE.md`
+- `docs/adr/TEMPLATE.md.tera`
 - `docs/adr/README.md`
 
 Create a new ADR:
@@ -31,6 +31,15 @@ madr new "Use Postgres for relational data"
 ```
 
 This creates the next numbered Markdown file, renders the template values, and refreshes the ADR index.
+When existing ADRs are present, the CLI asks whether the new ADR supersedes any of them.
+
+Create a new ADR that supersedes existing ADRs:
+
+```sh
+madr new --supersede 1,2 "Replace database decision"
+```
+
+This updates the superseded ADR status lines to link to the new ADR.
 
 Regenerate the index after manual file changes:
 

@@ -36,7 +36,7 @@ pub fn run() -> Result<()> {
 
     fs::create_dir_all(&adr_dir)
         .with_context(|| format!("Failed to create ADR directory: {}", adr_dir.display()))?;
-    fs::write(adr_dir.join("TEMPLATE.md"), template.contents)
+    fs::write(adr_dir.join("TEMPLATE.md.tera"), template.contents)
         .with_context(|| "Failed to write ADR template".to_string())?;
     fs::write(
         adr::config_path()?,
