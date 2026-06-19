@@ -25,8 +25,9 @@
 
 ## Consequences
 
-- **Positive (+):** [What gets easier/better?]
-- **Negative (-):** [What debt or friction are we accepting?]
+- Good, because [what gets easier or better].
+- Bad, because [what debt or friction are we accepting].
+- Neutral, because [what changes without being clearly good or bad].
 
 ## Links
 
