@@ -16,7 +16,7 @@ struct Cli {
 
 #[derive(Debug, Subcommand)]
 enum Command {
-    /// Create .adrrc.json and the ADR markdown directory
+    /// Create .madrrc.json and the ADR markdown directory
     Init,
     /// Create a new ADR markdown file in the ADR directory
     New {
