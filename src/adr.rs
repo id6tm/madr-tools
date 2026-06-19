@@ -3,7 +3,7 @@ use std::{fs, path::PathBuf};
 use anyhow::{Context, Result};
 use serde::{Deserialize, Serialize};
 
-pub const ADR_CONFIG_FILE: &str = ".adrrc.json";
+pub const ADR_CONFIG_FILE: &str = ".madrrc.json";
 pub const DEFAULT_ADR_DIRECTORY: &str = "docs/adr";
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
