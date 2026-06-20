@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/id6tm/madr-tools/compare/1.2.0...1.2.1) (2026-06-20)
+
+
+### Bug Fixes
+
+* **ci:** pin optionalDependencies to current tag ([7126c28](https://github.com/id6tm/madr-tools/commit/7126c287a0e6406047fa276d594732789137c66b))
+
 ## [1.2.0](https://github.com/id6tm/madr-tools/compare/1.1.0...1.2.0) (2026-06-19)
 
 
