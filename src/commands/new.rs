@@ -95,7 +95,7 @@ fn prompt_for_superseded_adrs(adr_files: &[AdrFile]) -> Result<Vec<SupersededAdr
 
     let theme = ColorfulTheme::default();
     let supersedes = Confirm::with_theme(&theme)
-        .with_prompt("Does this ADR supersede existing ADRs?")
+        .with_prompt("Does this ADR supersede any prior one?")
         .default(false)
         .interact()?;
     if !supersedes {
