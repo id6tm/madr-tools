@@ -11,6 +11,26 @@
           "type": "json",
           "path": "package.json",
           "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "package.json",
+          "jsonpath": "$.optionalDependencies['@id6tm/madr-tools-darwin-arm64']"
+        },
+        {
+          "type": "json",
+          "path": "package.json",
+          "jsonpath": "$.optionalDependencies['@id6tm/madr-tools-linux-arm64']"
+        },
+        {
+          "type": "json",
+          "path": "package.json",
+          "jsonpath": "$.optionalDependencies['@id6tm/madr-tools-linux-x64']"
+        },
+        {
+          "type": "json",
+          "path": "package.json",
+          "jsonpath": "$.optionalDependencies['@id6tm/madr-tools-win32-x64']"
         }
       ]
     }
